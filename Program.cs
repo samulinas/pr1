@@ -43,6 +43,17 @@ internal class Program
 		double W = w1.GetWork();
 		Console.Write($"\nОбчислення роботи (у Джоулях): {W}\n");
 		w1.Info();
+
+		Console.WriteLine("\n================ Завдання 4 ====================\n");
+		Console.Write("Введіть число х: ");
+		int x = Convert.ToInt32(Console.ReadLine());
+
+		Calculation c1 = new Calculation(x);
+		int sum = c1.CalcNumbers();
+		Console.Write($"\nCума квадратів різниці кожного з чотирьох чисел та числа х: {sum}\n");
+		c1.Info();
+		Console.WriteLine("\n================ Завдання 5 ====================\n");
+		Console.Write("Введіть прізвище: ");
 	}
 }
 public class Physics {
@@ -65,7 +76,7 @@ public class Work : Physics {
 		_seconds = seconds;
 	}
 	public double GetWork() {
-		double W = _voltage * GetСurrent() * _seconds;
+		double W = _resistance * GetСurrent() * GetСurrent() * _seconds;
 		return W;
 	}
 	public override void Info()
@@ -74,7 +85,7 @@ public class Work : Physics {
 	}
 }
 public class Numbers {
-	private int _a, _b, _c, _d;
+	protected int _a, _b, _c, _d;
 	public Numbers()
 	{
 		_a = 2;
@@ -93,7 +104,7 @@ public class Numbers {
 	{
 		Console.WriteLine("Об'єкт було знищено");
 	}
-	public void Info() {
+	public virtual void Info() {
 		Console.WriteLine($"a = {_a}, b = {_b}, c = {_c}, d = {_d}");
 	}
 	public double Average() {
@@ -107,5 +118,46 @@ public class Numbers {
 		int max = Math.Max(max1, max2);
 		Console.WriteLine($"Max = {max}");
 		return max;
+	}
+}
+public class Calculation : Numbers {
+	private int _x;
+	public Calculation(int x)
+	{
+		_x = x;
+	}
+	public int CalcNumbers() 
+	{
+		int result_abcd = (_a - _b) * (_a - _b) + (_a - _c) * (_a - _c) + (_a - _d) * (_a - _d) + (_b - _c) * (_b - _c) + (_b - _d) * (_b - _d) + (_c - _d) * (_c - _d);
+		int result_x = (_a - _x) * (_a - _x) + (_b - _x) * (_b - _x) + (_c - _x) * (_c - _x) + (_d - _x) * (_d - _x);
+		int result_sum = result_abcd + result_x;
+		return result_sum;
+	}
+	public override void Info()
+	{
+		Console.WriteLine($"a = {_a}, b = {_b}, c = {_c}, d = {_d}, x = {_x}, result_sum = {CalcNumbers()}");
+	}
+}
+public class Student_1 {
+	protected string? _name;
+	protected int _test;
+	protected int _five;
+	public virtual double Quality() {
+		return (double)_five / _test;
+	}
+	public virtual void Info() {
+		Console.WriteLine($"Прізвище {_name}, кількість іспитів {_test}, число оцінок п'ять {_five}, якість {Quality()}");
+	}
+}
+public class Student_2 : Student_1
+{
+	private int _three;
+	public override double Quality()
+	{
+		return Quality() - 0.5 * _three;
+	}
+	public override void Info()
+	{
+		Console.WriteLine($"Прізвище {_name}, кількість іспитів {_test}, число оцінок п'ять {_five}, число оцінок три {_three}, якість {Quality()}");
 	}
 }
